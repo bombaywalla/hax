@@ -13,8 +13,6 @@
             [syntereen.hax.db :as db]
             ))
 
-;;; ---------------- Main ----------------
-
 ;; TODO: Note that this way of calculating the jwt-secret
 ;; (in contrast to having the secret in the config)
 ;; implies that the user session is pinned to an instance of this server.
