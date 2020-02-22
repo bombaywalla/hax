@@ -1,6 +1,9 @@
 # hax
 
-FIXME: my new application.
+An example application that implements the server-side of the
+front-end application `hix`.
+
+Mostly for me to learn re-frame.
 
 ## Installation
 
@@ -44,7 +47,6 @@ FIXME: listing of options this app accepts.
 
 ## License
 
-Copyright © 2020 Dorab
+Copyright © 2020 Dorab Patel
 
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Distributed under the MIT License.
