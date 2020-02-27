@@ -13,7 +13,7 @@
 
 (defn user-valid?
   [user]
-  (s/valid? :hspecs/user user))
+  (s/valid? ::hspecs/user user))
 
 (defn sanitize-db-user
   "Sanitize the db user before sending back in a response."
