@@ -21,20 +21,24 @@
         integrant {:mvn/version "0.8.0"}
         }
  :aliases
- {:prod {:extra-paths ["prod"]
-         :jvm-opts ["--add-opens" "java.base/jdk.internal.misc=ALL-UNNAMED"]}
+ {:java9 {:jvm-opts ["--add-opens" "java.base/jdk.internal.misc=ALL-UNNAMED"]}
+
+  :prod {:extra-paths ["prod"]}
+
   :dev {:extra-paths ["dev"]
-        :extra-deps {integrant/repl {:mvn/version "0.3.1"}}
-        :jvm-opts ["--add-opens" "java.base/jdk.internal.misc=ALL-UNNAMED"]}
+        :extra-deps {integrant/repl {:mvn/version "0.3.1"}}}
+
   :test {:extra-paths ["test"]
-         :extra-deps {org.clojure/test.check {:mvn/version "0.10.0"}}
-         :jvm-opts ["--add-opens" "java.base/jdk.internal.misc=ALL-UNNAMED"]}
+         :extra-deps {org.clojure/test.check {:mvn/version "0.10.0"}
+                      clj-http {:mvn/version "3.10.0"}
+                      cheshire {:mvn/version "5.10.0"}}}
+
   :runner {:extra-deps {com.cognitect/test-runner
                         {:git/url "https://github.com/cognitect-labs/test-runner"
                          :sha "f7ef16dc3b8332b0d77bc0274578ad5270fbfedd"}}
            :main-opts ["-m" "cognitect.test-runner"
-                       "-d" "test"]
-           :jvm-opts ["--add-opens" "java.base/jdk.internal.misc=ALL-UNNAMED"]}
+                       "-d" "test"]}
+
   :uberjar {:extra-deps {seancorfield/depstar {:mvn/version "0.5.2"}}
             :main-opts ["-m" "hf.depstar.uberjar" "hax.jar"
                         "-C" "-m" "syntereen.hax"]}
