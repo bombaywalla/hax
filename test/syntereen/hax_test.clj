@@ -87,6 +87,15 @@
           url (str base-uri ":" port api-uri)]
       url)))
 
+;; Default options to use for the http client.
+(def http-opts
+  {
+   :throw-exceptions false              ; Do not throw exception on exceptional statuses
+   :content-type :json                  ; Send JSON
+   :as :json                            ; Return JSON
+   :coerce :always                      ; Assume return is JSON always (not just unexceptional statuses)
+   })
+
 ;; Merge with http-opts if trying to debug what the http client is doing.
 (def http-debug-opts
   {
@@ -101,11 +110,6 @@
         _ (log/debug (str "LOGIN API URL: " url))
         payload {:user {:email joe-email
                         :password joe-password}}
-        http-opts {
-                   :throw-exceptions false
-                   :content-type :json
-                   :as :json
-                   }
         all-params (assoc http-opts
                           :body
                           (cheshire/generate-string payload))
@@ -127,11 +131,6 @@
         _ (log/debug (str "LOGIN API URL: " url))
         payload {:user {:email "unknown@example.com"
                         :password joe-password}}
-        http-opts {
-                   :throw-exceptions false
-                   :content-type :json
-                   :as :json
-                   }
         all-params (assoc http-opts
                           :body
                           (cheshire/generate-string payload))
