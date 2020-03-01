@@ -1,12 +1,13 @@
 (ns syntereen.hax.db
   "The database to store Hax data."
-  (:require [clojure.spec.alpha :as s]
-            [cambium.core :as log]
-            [cambium.mdc  :as mlog]
-            [integrant.core :as ig]
-            [buddy.hashers :as hashers]
-            [syntereen.hax.specs :as hspecs]
-            ))
+  (:require
+   [clojure.spec.alpha :as s]
+   ;; [cambium.core :as log]
+   ;; [cambium.mdc  :as mlog]
+   ;; [integrant.core :as ig]
+   [buddy.hashers :as hashers]
+   [syntereen.hax.specs :as hspecs]
+   ))
 
 (defonce mock-db
   (atom {}))

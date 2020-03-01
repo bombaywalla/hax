@@ -1,21 +1,22 @@
 (ns syntereen.hax.system
   "System configuration for the hax server."
-  (:require [aero.core :as aero]
-            [clojure.java.io :as io]
-            [integrant.core :as ig]
-            )
+  (:require
+   [aero.core :as aero]
+   [clojure.java.io :as io]
+   [integrant.core :as ig]
+   )
   )
 
 (def config-file-name "hax/system.edn")
 
 ;; Tell the aero reader about ig/ref
 (defmethod aero/reader 'ig/ref
-  [_ tag value]
+  [_ _ value]                           ; [_ tag value]
   (ig/ref value))
 
 ;; Tell the aero reader about ig/refset
 (defmethod aero/reader 'ig/refset
-  [_ tag value]
+  [_ _ value]                           ; [_ tag value]
   (ig/refset value))
 
 (defn config

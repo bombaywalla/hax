@@ -1,17 +1,18 @@
 (ns syntereen.hax
   "The Hax server."
-  (:require [clojure.spec.alpha :as s]
-            [cambium.core :as log]
-            [cambium.mdc  :as mlog]
-            [integrant.core :as ig]
-            [schema.core :as schema]
-            [buddy.sign.jwt :as jwt]
-            [buddy.hashers :as hashers]
-            [yada.yada :as yada]
-            [syntereen.hax.specs :as hspecs]
-            [syntereen.hax.system :as system]
-            [syntereen.hax.db :as db]
-            ))
+  (:require
+   [buddy.hashers :as hashers]
+   [buddy.sign.jwt :as jwt]
+   [cambium.core :as log]
+   ;; [cambium.mdc  :as mlog]
+   ;; [clojure.spec.alpha :as s]
+   [integrant.core :as ig]
+   [schema.core :as schema]
+   [syntereen.hax.db :as db]
+   ;; [syntereen.hax.specs :as hspecs]
+   [syntereen.hax.system :as system]
+   [yada.yada :as yada]
+   ))
 
 ;; TODO: Note that this way of calculating the jwt-secret
 ;; (in contrast to having the secret in the config)
@@ -34,7 +35,9 @@
   [user]
   (let [email (:email user)]
     (try (jwt/sign {:email email} (jwt-secret))
-         (catch Exception e nil))))     ; TODO: At least log this condition. Do even beter.
+         (catch Exception e
+           (log/warn {} e "Not jwt/sign failed. Continuing.")
+           nil))))
 
 (defn login-creds-valid?
   "Returns `true` if the login credentials presented are valid. Else `false`."
@@ -86,7 +89,7 @@
     ))
 
 (defn do-list-users
-  [ctx]
+  [_]
   (db/all-user-keys))
 
 (def access-control
@@ -180,7 +183,7 @@
 (defn stop [server]
  ((:close server)))
 
-(defmethod ig/init-key ::webserver [_ {:keys [port] :as value}]
+(defmethod ig/init-key ::webserver [_ {:keys [port]}]
   (create-web-server port))
 
 (defmethod ig/halt-key! ::webserver [_ server]
@@ -188,7 +191,7 @@
 
 (defn -main
   "Start up the production hax server."
-  [& args]
+  [& _]
   (log/info "Hax is starting.")
   (let [config (system/config-and-load :prod)
         prepped-config (ig/prep config)
@@ -203,6 +206,8 @@
 
 (comment
   (require '[syntereen.hax :as hax] :reload)
-  (def server (hax/create-web-server (config/webserver-port)))
-  (hax/stop server)
+  (def config (system/config-and-load :dev))
+  (def prepped-config (ig/prep config))
+  (def sys (ig/init prepped-config))
+  (ig/halt! sys)
   )
