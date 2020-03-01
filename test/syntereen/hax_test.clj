@@ -57,7 +57,7 @@
   (reset! *sut* (start-sut)))
 
 ;; For REPL use only
-(defn halt!
+(defn halt
   "Stop the Hax system. REPL use only."
   []
   (stop-sut @*sut*))
