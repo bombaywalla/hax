@@ -10,3 +10,4 @@
 .hgignore
 .hg/
 **/.clj-kondo/.cache
+.eastwood
