@@ -1,7 +1,9 @@
 {:ig/system
- {:syntereen.hax.webserver/server
+ {:syntereen.hax.db/db nil
+  :syntereen.hax.webserver/server
   {:port #profile
    {:prod 5555
     :dev 5554
     :test 5556}
+   :db #ig/ref :syntereen.hax.db/db
    }}}

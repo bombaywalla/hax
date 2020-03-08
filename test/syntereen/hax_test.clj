@@ -71,10 +71,13 @@
 (defn reset-example-db
   "Reset the db wth one example user."
   []
-  (db/reset-mock-db)
-  (db/add-user {:email joe-email
-                :full-name joe-full-name
-                :password joe-password}))
+  (with-sut sut
+    (let [db (::db/db sut)]
+      (db/reset-db db)
+      (db/add-user db
+                   {:email joe-email
+                    :full-name joe-full-name
+                    :password joe-password}))))
 
 (defn login-api-url
   "Returns the API URL to be used for logins.

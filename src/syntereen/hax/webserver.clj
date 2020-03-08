@@ -53,16 +53,16 @@
 ;;; java.lang.ClassCastException: null
 
 (defn do-register
-  [ctx]
+  [db ctx]
   ;; {:parameters {:body {:user {:full-name ... :email ... :password ...}}}}
   (let [user (:user (:body (:parameters ctx)))
         response (:response ctx)]
     (log/debug "\n----------------------------------------------------------------")
     (log/debug "The register API was called.")
     (log/debug (str "context parameters: " (pr-str user)))
-    (try (let [new-user (db/add-user user)
+    (try (let [new-user (db/add-user db user)
                _ (log/debug (str "new-user: " (pr-str new-user)))
-               body {:user (db/sanitize-db-user new-user)}]
+               body {:user (db/sanitize-user new-user)}]
            (log/debug (str "response body: " (pr-str body)))
            (assoc response :status 200 :body body))
          (catch Exception e
@@ -72,14 +72,14 @@
              (assoc response :status 500 :body {:errors {:exception e}}))))))
 
 (defn do-login
-  [ctx]
+  [db ctx]
   ;; {:parameters {:body {:user {:email ... :password ...}}}}
   (let [user (:user (:body (:parameters ctx)))
         response (:response ctx)
         user-key (db/get-user-key user)
-        db-user (db/get-user user-key)
+        db-user (db/get-user db user-key)
         token (gen-token db-user)
-        body {:user (assoc (db/sanitize-db-user db-user) :token token)}]
+        body {:user (assoc (db/sanitize-user db-user) :token token)}]
     (log/debug "\n----------------------------------------------------------------")
     (log/debug "The login API was called.")
     (log/debug (str "context parameters: " (pr-str user)))
@@ -90,8 +90,8 @@
     ))
 
 (defn do-list-users
-  [_]
-  (db/all-user-keys))
+  [db _]
+  (db/all-user-keys db))
 
 (def access-control
   {
@@ -112,7 +112,8 @@
              (log/debug (str "Parameters: " (pr-str (:parameters ctx)))))
    })
 
-(def register-resource
+(defn register-resource
+  [db]
   (yada/resource
    (merge 
     {:id :hax/register-resource
@@ -127,7 +128,7 @@
                                                  :email schema/Str
                                                  :password schema/Str
                                                  }}}
-                      :response do-register
+                      :response (partial do-register db)
                       :responses {200 {:description "Registration successful"}
                                   400 {:description "Registration unsuccessful: Client error"}
                                   500 {:description "Registration unsuccessful: Server error"}
@@ -136,14 +137,15 @@
                :get {:description "List all user keys. If authorized to do so."
                      :summary "List all user keys."
                      :produces "application/json"
-                     :response do-list-users
+                     :response (partial do-list-users db)
                      }
                }
      }
     logger
     access-control)))
 
-(def login-resource
+(defn login-resource
+  [db]
   (yada/resource
    (merge
     {:id :hax/login-resource
@@ -157,7 +159,7 @@
                       :parameters {:body {:user {:email schema/Str
                                                  :password schema/Str
                                                  }}}
-                      :response do-login
+                      :response (partial do-login db)
                       :responses {200 {:description "Login successful"}
                                   400 {:description "Login unsuccessful: Client error"}
                                   500 {:description "Login unsuccessful: Server error"}
@@ -166,26 +168,27 @@
     logger
     access-control)))
 
-(def hax-routes
+(defn hax-routes
+  [db]
   ["" [
        ["/api" [
-                ["/users/login" login-resource] ; has to come before /users
-                ["/users" register-resource]
+                ["/users/login" (login-resource db)] ; has to come before /users
+                ["/users" (register-resource db)]
                 [true (yada/as-resource nil)]
                 ]]
        [true (yada/as-resource nil)]
        ]])
 
 (defn create-web-server
-  [port]
+  [db port]
   (log/info (str "Starting yada on port " port))
-  (yada/listener hax-routes {:port port}))
+  (yada/listener (hax-routes db) {:port port}))
 
 (defn stop [server]
  ((:close server)))
 
-(defmethod ig/init-key ::server [_ {:keys [port]}]
-  (create-web-server port))
+(defmethod ig/init-key ::server [_ {:keys [db port]}]
+  (create-web-server db port))
 
 (defmethod ig/halt-key! ::server [_ server]
   (stop server))
