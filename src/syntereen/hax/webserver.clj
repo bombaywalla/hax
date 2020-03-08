@@ -15,11 +15,14 @@
    )
   )
 
+;;; ---------------- token ----------------
+
 ;; TODO: Note that this way of calculating the jwt-secret
 ;; (in contrast to having the secret in the config)
 ;; implies that the user session is pinned to an instance of this server.
 ;; So, if the server dies, so does the session.
 ;; Another thing I don't like is that this does some computation on load.
+
 (def jwt-secret
   "Return a random string used as a secret to sign JWT tokens.
   The string is 16 characters.
@@ -46,6 +49,9 @@
   (let [db-password-hash (:password-hash db-user)
         login-password (:password login-user)]
     (hashers/check login-password db-password-hash)))
+
+
+;;; ---------------- handlers ----------------
 
 ;;; TODO: If the incoming JSON is not proper, we get a 500. Probably should get a 400, no?
 ;;; In this case, an email field with a null value.
