@@ -1,3 +1,4 @@
+
 # hax
 
 An example application that implements the server-side of the
@@ -19,7 +20,7 @@ or, if using Java9+
 
 	$ clj -A:prod:java9 --main syntereen.hax
 
-Run the project's tests (they'll fail until you edit them):
+Run the project's tests:
 
     $ clj -A:test:runner
 

@@ -4,7 +4,7 @@
             [integrant.core :as ig]
             [clj-http.client :as http]
             [cheshire.core :as cheshire]
-            [syntereen.hax :as hax]
+            [syntereen.hax.webserver :as webserver]
             [syntereen.hax.system :as system]
             [syntereen.hax.db :as db]))
 
@@ -83,7 +83,7 @@
   (with-sut sut
     (let [base-uri "http://127.0.0.1"
           api-uri "/api/users/login"
-          port (:port (::hax/webserver sut))
+          port (:port (::webserver/server sut))
           url (str base-uri ":" port api-uri)]
       url)))
 
