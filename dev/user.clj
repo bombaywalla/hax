@@ -46,3 +46,6 @@
   "Get the Integrant configuration."
   []
   @(jit integrant.repl.state/config))
+
+;; So that clojure.tools.namespace knows which dirs to scan when refreshing.
+((jit clojure.tools.namespace.repl/set-refresh-dirs) "dev" "src" "test")
