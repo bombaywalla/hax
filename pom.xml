@@ -5,7 +5,8 @@
   <artifactId>hax</artifactId>
   <version>0.1.0-SNAPSHOT</version>
   <name>syntereen/hax</name>
-  <description>FIXME: my new application.</description>
+  <description>An example application that implements the server-side
+  of the front-end application `hix`.</description>
   <url>https://github.com/syntereen/hax</url>
   <licenses>
     <license>
@@ -15,7 +16,7 @@
   </licenses>
   <developers>
     <developer>
-      <name>Dorab</name>
+      <name>Dorab Patel</name>
     </developer>
   </developers>
   <scm>
@@ -30,6 +31,76 @@
       <artifactId>clojure</artifactId>
       <version>1.10.1</version>
     </dependency>
+    <dependency>
+      <groupId>org.clojure</groupId>
+      <artifactId>tools.logging</artifactId>
+      <version>0.4.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>1.7.30</version>
+    </dependency>
+    <dependency>
+      <groupId>cambium</groupId>
+      <artifactId>cambium.logback.core</artifactId>
+      <version>0.4.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-to-slf4j</artifactId>
+      <version>2.13.0</version>
+    </dependency>
+    <dependency>
+      <groupId>aero</groupId>
+      <artifactId>aero</artifactId>
+      <version>1.1.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jul-to-slf4j</artifactId>
+      <version>1.7.30</version>
+    </dependency>
+    <dependency>
+      <groupId>integrant</groupId>
+      <artifactId>integrant</artifactId>
+      <version>0.8.0</version>
+    </dependency>
+    <dependency>
+      <groupId>buddy</groupId>
+      <artifactId>buddy-hashers</artifactId>
+      <version>1.4.0</version>
+    </dependency>
+    <dependency>
+      <groupId>yada</groupId>
+      <artifactId>yada</artifactId>
+      <version>1.4.0-alpha1</version>
+    </dependency>
+    <dependency>
+      <groupId>cambium</groupId>
+      <artifactId>cambium.codec-simple</artifactId>
+      <version>0.9.3</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>osgi-over-slf4j</artifactId>
+      <version>1.7.30</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.30</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>log4j-over-slf4j</artifactId>
+      <version>1.7.30</version>
+    </dependency>
+    <dependency>
+      <groupId>cambium</groupId>
+      <artifactId>cambium.core</artifactId>
+      <version>0.9.3</version>
+    </dependency>
   </dependencies>
   <build>
     <sourceDirectory>src</sourceDirectory>
@@ -38,10 +109,6 @@
     <repository>
       <id>clojars</id>
       <url>https://repo.clojars.org/</url>
-    </repository>
-    <repository>
-      <id>sonatype</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
     </repository>
   </repositories>
   <distributionManagement>
