@@ -75,7 +75,7 @@ Edit the command line to replace `dev`with `test`. Then `ENTER`.
 Once you have a cider nrepl buffer in the `user` namespace,
 
 	(require 'syntereen.hax-test)
-	(in-ns 'syntereen-hax-test)
+	(in-ns 'syntereen.hax-test)
 
 To start the server,
 
